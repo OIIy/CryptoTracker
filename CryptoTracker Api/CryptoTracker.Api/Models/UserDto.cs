@@ -3,21 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CryptoTracker.Api.Models
 {
-    public class User
+    public class UserDto
     {
         [Key]
         public int UserId { get; set; }
 
         [Required]
         [Column(TypeName = "nvarchar(20)")]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [Required]
         [Column(TypeName = "nvarchar(20)")]
-        public byte[] PasswordHash { get; set; }
-
-        [Required]
-        [Column(TypeName = "nvarchar(20)")]
-        public byte[] PasswordSalt { get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }
