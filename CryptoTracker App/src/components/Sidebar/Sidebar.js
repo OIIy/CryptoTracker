@@ -7,8 +7,7 @@ function Sidebar() {
   const [columns, setColumns] = useState([]);
   const [rows, setRows] = useState([]);
 
-  useEffect(() => {
-    axios.get("https://localhost:44393/crypto"}).then(
+  useEffect(() => { axios.get("https://localhost:44393/crypto").then(
       (res) => {
         const data = res.data.datatable;
         console.log(data);
@@ -21,7 +20,7 @@ function Sidebar() {
         setError(error);
         setIsLoaded(true);
       }
-    );
+    )
   }, []);
 
   function mapDataToTable(data) {
