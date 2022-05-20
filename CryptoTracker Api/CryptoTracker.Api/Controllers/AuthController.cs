@@ -35,25 +35,27 @@ namespace CryptoTracker.Api.Controllers
             user.PasswordSalt = passwordSalt;
             user.Username = request.Username;
 
+            // TODO: Save user object to the database
+
             return Ok(user);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> login(UserDto request)
+        public async Task<ActionResult<string>> Login(UserDto request)
         {
             if(user.Username != request.Username)
             {
                 return BadRequest("User not found.");
             }
 
-            if(!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordHash))
+            if(!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
-                return BadRequest("Wrong password");
+                return BadRequest("Wrong password.");
             }
 
             string token = CreateToken(user);
 
-            return Ok("My token");
+            return Ok(token);
         }
 
         private string CreateToken(User user)
@@ -89,7 +91,7 @@ namespace CryptoTracker.Api.Controllers
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
         {
-            using (var hmac = new HMACSHA512(user.PasswordSalt))
+            using (var hmac = new HMACSHA512(passwordSalt))
             {
                 var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return computedHash.SequenceEqual(passwordHash);
