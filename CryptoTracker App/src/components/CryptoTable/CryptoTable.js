@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function Sidebar() {
+function CryptoTable() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [columns, setColumns] = useState([]);
@@ -64,4 +64,4 @@ function Sidebar() {
   }
 }
 
-export default Sidebar;
+export default CryptoTable;
