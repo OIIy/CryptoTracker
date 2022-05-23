@@ -6,7 +6,6 @@ function LogIn({ Login, error }) {
 
     const submitHandler = e => {
         e.preventDefault();
-
         Login(details);
     }
 
@@ -16,7 +15,7 @@ function LogIn({ Login, error }) {
                 <div className="input-group-prepend">
                     <span className="input-group-text" id="basic-addon1">@</span>
                 </div>
-                <input type="email" className="form-control" placeholder="Username" aria-label="Username" name="username" id="username"
+                <input type="text" className="form-control" placeholder="Username" aria-label="Username" name="username" id="username"
                        onChange={e => setDetails({...details, username: e.target.value})} 
                        value={details.username}
                 />

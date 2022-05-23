@@ -8,12 +8,12 @@ import { FaBars } from 'react-icons/fa'
 import LogIn from './components/LogIn/LogIn';
 
 function App() {
-  const [user, setUser] = useState({ username: "", password: "", authToken: ""});
+  const [user, setUser] = useState({ username: "", password: "", authToken: "" });
   const [error, setError] = useState("");
 
   const Login = details => {
     // Post to authController
-    axios.post('https://localhost:44393/api/Auth/login', {...user}).then(res => {
+    axios.post('https://localhost:44393/api/Auth/login', {...details}).then(res => {
       console.log(res);
     });
   }
@@ -23,7 +23,7 @@ function App() {
       <header className='py-5'>
         <nav className='navbar navbar-expand-lg navbar-dark fixed-top'>
           <div className='container-fluid'>
-          <button
+          <button 
               className="navbar-toggler"
               type="button"
               data-mdb-toggle="collapse"
