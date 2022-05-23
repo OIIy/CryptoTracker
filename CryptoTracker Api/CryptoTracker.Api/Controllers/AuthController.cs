@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IdentityModel.Tokens.Jwt;
 using System;
+using CryptoTracker.Api.Repositories.Interfaces;
 
 namespace CryptoTracker.Api.Controllers
 {
@@ -18,66 +19,63 @@ namespace CryptoTracker.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public static User user = new User();
-        private readonly IConfiguration _configuration;
+        private DataContext dataContext;
+        private readonly IUserService userRepository;
+        private readonly IConfiguration configuration;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, DataContext dataContext, IUserService userRepository)
         {
-            this._configuration = configuration;
+            this.configuration = configuration;
+            this.dataContext = dataContext;
+            this.userRepository = userRepository;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserDto request)
         {
+            User user = new User();
+
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-            user.Username = request.Username;
+            try
+            {
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                user.Username = request.Username;
 
-            // TODO: Save user object to the database
+                // TODO: Save user object to the database
+                dataContext.Users.Add(user);
+                dataContext.SaveChanges();   
+            }
+            catch (Exception error)
+            {
+                // Write logs to DB table instead of writing to console
+                return BadRequest(error);
+            }
 
-            return Ok(user);
+            return Ok(user.UserId);
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
-            if(user.Username != request.Username)
+            // Find user
+            User user = userRepository.GetUserDetails(request.Username);
+            
+            if (user == null)
             {
                 return BadRequest("User not found.");
             }
 
-            if(!VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if (userRepository.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
-                return BadRequest("Wrong password.");
+                return BadRequest("Password doesn't match.");
             }
 
-            string token = CreateToken(user);
+            // Create jwt token
+            string token = userRepository.CreateToken(user);
 
             return Ok(token);
-        }
-
-        private string CreateToken(User user)
-        {
-            List<Claim> claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.Username)
-            };
-
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
-                _configuration.GetSection("Authentication:Token").Value));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-
-            return jwt;
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

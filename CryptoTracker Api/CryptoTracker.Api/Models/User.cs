@@ -9,15 +9,15 @@ namespace CryptoTracker.Api.Models
         public int UserId { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(20)")]
+        [Column(TypeName = "nvarchar(65)")]
         public string Username { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(20)")]
+        [Column(TypeName = "nvarchar(255)")]
         public byte[] PasswordHash { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(20)")]
+        [Column(TypeName = "nvarchar(255)")]
         public byte[] PasswordSalt { get; set; }
     }
 }
