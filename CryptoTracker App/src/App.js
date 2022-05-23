@@ -5,19 +5,9 @@ import './global.css';
 import CryptoTable from './components/CryptoTable/CryptoTable';
 import Search from './components/Search/Search';
 import { FaBars } from 'react-icons/fa'
-import LogIn from './components/LogIn/LogIn';
+import Login from './components/Login/Login';
 
 function App() {
-  const [user, setUser] = useState({ username: "", password: "", authToken: "" });
-  const [error, setError] = useState("");
-
-  const Login = details => {
-    // Post to authController
-    axios.post('https://localhost:44393/api/Auth/login', {...details}).then(res => {
-      console.log(res);
-    });
-  }
-
   return (
     <div className='wrapper'>
       <header className='py-5'>
@@ -40,11 +30,7 @@ function App() {
                   <a className="nav-link" aria-current="page" href="#">Crytpo</a>
                 </li>
               </ul>
-              {(user.authToken != "") ? (
-                <a className="nav-link" href="">{user.username}</a>
-              ) : (
-                <LogIn Login={Login} error={error} />
-              )}
+              <Login />
             </div>
           </div>
         </nav>

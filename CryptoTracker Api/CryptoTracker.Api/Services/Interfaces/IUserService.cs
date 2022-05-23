@@ -1,6 +1,6 @@
 ﻿using CryptoTracker.Api.Models;
 
-namespace CryptoTracker.Api.Repositories.Interfaces
+namespace CryptoTracker.Api.Services.Interfaces
 {
     public interface IUserService
     {

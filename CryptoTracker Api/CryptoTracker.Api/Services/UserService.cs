@@ -1,5 +1,5 @@
 ﻿using CryptoTracker.Api.Models;
-using CryptoTracker.Api.Repositories.Interfaces;
+using CryptoTracker.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +12,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CryptoTracker.Api.Repositories
+namespace CryptoTracker.Api.Services
 {
     public class UserService : IUserService
     {
@@ -111,18 +111,18 @@ namespace CryptoTracker.Api.Repositories
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(configuration["Authentication:Token"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddHours(1),
-                Issuer = configuration["Authentication:Issuer"],
-                Audience = configuration["Authentication:Audience"],
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("Authentication:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
         }
 
         public void CreatePasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)

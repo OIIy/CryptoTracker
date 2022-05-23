@@ -16,12 +16,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.EntityFrameworkCore;
-using CryptoTracker.Api.Repositories;
-using CryptoTracker.Api.Repositories.Interfaces;
+using CryptoTracker.Api.Services;
+using CryptoTracker.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using CryptoTracker.Api.Middleware;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace CryptoTracker.Api
 {
@@ -40,7 +41,9 @@ namespace CryptoTracker.Api
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
             services.AddSignalR();
+            
             services.AddMvc();
+
             services.AddControllers();
 
             services.AddScoped<IUserService, UserService>();
@@ -61,31 +64,14 @@ namespace CryptoTracker.Api
             services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoTracker.Api", Version = "v1" });
-
-                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                swagger.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
+                    Description = "Standard Authorization header using the Bearer scheme (\bearer {token})",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
                 });
-
-                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            new string[] {}
-                    }
-                });
+                swagger.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
             services.AddAuthentication(option =>
@@ -96,13 +82,11 @@ namespace CryptoTracker.Api
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = false,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = Configuration["Authentication:Issuer"],
-                    ValidAudience = Configuration["Authentication:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:Key"])) //Configuration["JwtToken:SecretKey"]
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Authentication:Token").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true
                 };
             });
 
@@ -131,6 +115,7 @@ namespace CryptoTracker.Api
             app.UseRouting();
 
             app.UseCors("AllowOrigins");
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<AuthenticateJwt>();
             app.UseEndpoints(endpoints =>

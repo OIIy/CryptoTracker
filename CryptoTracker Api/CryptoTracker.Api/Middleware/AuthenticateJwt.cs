@@ -1,4 +1,4 @@
-﻿using CryptoTracker.Api.Repositories.Interfaces;
+﻿using CryptoTracker.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.IdentityModel.Tokens.Jwt;
 using System;
-using CryptoTracker.Api.Repositories.Interfaces;
+using CryptoTracker.Api.Services.Interfaces;
 
 namespace CryptoTracker.Api.Controllers
 {
@@ -67,7 +67,7 @@ namespace CryptoTracker.Api.Controllers
                 return BadRequest("User not found.");
             }
 
-            if (userRepository.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            if (!userRepository.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
             {
                 return BadRequest("Password doesn't match.");
             }
