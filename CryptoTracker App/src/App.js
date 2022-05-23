@@ -30,7 +30,7 @@ function App() {
                   <a className="nav-link" aria-current="page" href="#">Crytpo</a>
                 </li>
               </ul>
-              <Login />
+              {/* <Login /> */}
             </div>
           </div>
         </nav>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../../api/axios";
 
 function CryptoTable() {
   const [error, setError] = useState(null);
@@ -36,7 +36,7 @@ function CryptoTable() {
   }
 
   function getCrypto() {
-    axios.get("https://localhost:44393/crypto", {
+    axios.get("crypto", {
     }).then(
         (res) => {
           const data = res.data.datatable;

@@ -17,12 +17,21 @@ namespace CryptoTracker.Api
         private readonly HttpClient _httpClient;
         public CryptoClient(HttpClient httpClient) => _httpClient = httpClient;
 
-        public async Task<string> GetOHLC(string coin, string pair)
+        public async Task<string> GetOHLC(string BNC2Code)
         {
+            // Write function to build string for API usage
+
+            // Format today's date for date code
+
+            // GWA - Global weighted average for price always USD
+            // MWA - Daily market weighted average for a currency pair
+
+            string date = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+
             UriBuilder uriBuilder = new UriBuilder(_httpClient.BaseAddress);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            query["date"] = "2022-01-26";
-            query["code"] = "MWA_FTM_BTC";
+            query["code"] = BNC2Code;
+            query["date"] = date;
             uriBuilder.Query = query.ToString();
             
             _httpClient.BaseAddress = uriBuilder.Uri;

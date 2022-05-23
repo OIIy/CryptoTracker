@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 namespace CryptoTracker.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    [Authorize]
+    [Route("api/[controller]")]
+    //[Authorize]
     public class CryptoController : ControllerBase
     {
         private readonly ILogger<CryptoController> _logger;
@@ -25,9 +25,21 @@ namespace CryptoTracker.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<String> Get()
+        public async Task<String> Get(string coin = "BTC", string pair = "ETH")
         {
-            var response = await _CryptoClient.GetOHLC("ETH", "USDT");
+            //TODO: Default get should fetch top movers by default
+            string BNC2Code = "MWA";
+
+            if (string.IsNullOrEmpty(pair))
+            {
+                BNC2Code = "GWA";
+            }
+
+            BNC2Code = string.Format("{0}_{1}_{2}", BNC2Code, coin, pair);
+
+            var response = await _CryptoClient.GetOHLC(BNC2Code);
+
+            //TODO: Do some server side processing to format the column names and values
 
             return response;
         }

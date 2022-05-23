@@ -21,7 +21,6 @@ using CryptoTracker.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using CryptoTracker.Api.Middleware;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace CryptoTracker.Api
@@ -64,14 +63,14 @@ namespace CryptoTracker.Api
             services.AddSwaggerGen(swagger =>
             {
                 swagger.SwaggerDoc("v1", new OpenApiInfo { Title = "CryptoTracker.Api", Version = "v1" });
-                swagger.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Description = "Standard Authorization header using the Bearer scheme (\bearer {token})",
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                });
-                swagger.OperationFilter<SecurityRequirementsOperationFilter>();
+                //swagger.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                //{
+                //    Description = "Standard Authorization header using the Bearer scheme (\bearer {token})",
+                //    In = ParameterLocation.Header,
+                //    Name = "Authorization",
+                //    Type = SecuritySchemeType.ApiKey
+                //});
+                //swagger.OperationFilter<SecurityRequirementsOperationFilter>();
             });
 
             services.AddAuthentication(option =>
@@ -115,9 +114,8 @@ namespace CryptoTracker.Api
             app.UseRouting();
 
             app.UseCors("AllowOrigins");
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseMiddleware<AuthenticateJwt>();
+            //app.UseAuthentication();
+            //app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
