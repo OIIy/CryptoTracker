@@ -1,23 +1,33 @@
 import React, { useState, useEffect } from "react";
+import axios from "../../api/axios";
+import './Search.css';
 
 function Search() {
-    return (
-        <div className="input-group">
-            <select className="form-select" aria-label="Select your token">
-                <option defaultValue={true}>Select Token</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
+    const [cryptoList, setCryptoList] = useState(''); 
+    const [cryptoResults, setCryptoResults] = useState([]);
 
-            <select className="form-select" aria-label="Select your token pair">
-                <option defaultValue={true}>Select Pair</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-            </select>
+    useEffect(() => {
+        getCryptoList();
+    }, [])
+
+    const liveSearch = val => {
+        console.log(results);
+        var results = cryptoList.filter(x => x.includes(val));
+    }
+
+    const getCryptoList = () => {
+        axios.get('crypto/list').then(res => {
+            setCryptoList([res.data])
+        })
+    }
+ 
+    return (
+        <div class="input-group input-group-lg">
+            <input type="text" class="form-control" aria-label="Large" aria-describedby="inputGroup-sizing-sm" placeholder="Start Searching for Cryptocurrencies"
+                onChange={e => liveSearch(e.target.value)} 
+            />
         </div>
-        )
+    )
 }
 
 export default Search;

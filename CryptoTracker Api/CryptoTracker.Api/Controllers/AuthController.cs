@@ -72,6 +72,8 @@ namespace CryptoTracker.Api.Controllers
                 return BadRequest("Password doesn't match.");
             }
 
+
+
             // Create jwt token
             string token = userRepository.CreateToken(user);
 

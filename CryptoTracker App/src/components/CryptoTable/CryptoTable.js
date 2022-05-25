@@ -9,31 +9,8 @@ function CryptoTable() {
   const [tokens, setTokens] = useState({})
 
   useEffect(() => {
-    // let isMounted = true;
-    // const abortController = new AbortController();
-
     getCrypto();
-
-    return () => {
-      // isMounted = false;
-      // abortController.abort();
-    }
   }, []);
-
-  function mapDataToTable(data) {
-    formatColumnNames(data.columns);
-
-    var columnData = data.columns.map((col) => col.name);
-    var [rowData] = data.data;
-
-    setColumns(columnData);
-    setRows(rowData);
-  }
-
-  function formatColumnNames(columns) {
-    // TODD - Format column names
-    console.log(columns);
-  }
 
   function getCrypto() {
     axios.get("crypto", {
@@ -53,6 +30,22 @@ function CryptoTable() {
         }
       )
   }
+
+  function mapDataToTable(data) {
+    formatColumnNames(data.columns);
+
+    var columnData = data.columns.map((col) => col.name);
+    var [rowData] = data.data;
+
+    setColumns(columnData);
+    setRows(rowData);
+  }
+
+  function formatColumnNames(columns) {
+    // TODD - Format column names
+    console.log(columns);
+  }
+
 
   if (error) {
     return <div>Error: {error.message}</div>;
