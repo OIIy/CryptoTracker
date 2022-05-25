@@ -26,7 +26,7 @@ namespace CryptoTracker.Api
             // GWA - Global weighted average for price always USD
             // MWA - Daily market weighted average for a currency pair
 
-            string date = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+            string date = DateTime.Now.AddDays(-5).ToString("yyyy-MM-dd");
 
             UriBuilder uriBuilder = new UriBuilder(_httpClient.BaseAddress);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);

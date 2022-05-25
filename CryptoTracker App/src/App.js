@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './index.css';
-import './global.css';
 import CryptoTable from './components/CryptoTable/CryptoTable';
 import Search from './components/Search/Search';
-import { FaBars } from 'react-icons/fa'
 import Login from './components/Login/Login';
+import { FaBars } from 'react-icons/fa'
+import './index.css';
+import './global.css';
 
 function App() {
   return (

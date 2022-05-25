@@ -43,7 +43,6 @@ function CryptoTable() {
 
   function formatColumnNames(columns) {
     // TODD - Format column names
-    console.log(columns);
   }
 
 
