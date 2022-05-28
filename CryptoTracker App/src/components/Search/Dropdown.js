@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
+import './Dropdown.css';
 
 function Dropdown(props) {
     const [dropdownResults, setDropdownResults] = useState([]);
 
     useEffect(() => {
-        setDropdownResults(props.data);
+        if (props.data) {
+            console.log('props exist');
+            setDropdownResults(props.data);
+        }
     }, [props])
 
     useEffect(() => {
     }, [dropdownResults])
 
     return (
-        <div className="dropdown-container">
-            {dropdownResults.length && dropdownResults.map((result) => (
-                <span>{result.CodeDescription}</span>
-            ))}
+        <div className="dropdown container">
+            <ul>
+                {dropdownResults.length && dropdownResults.map((result) => (<li>{result.CodeDescription}</li>))}
+            </ul>
         </div>
     )
 }
