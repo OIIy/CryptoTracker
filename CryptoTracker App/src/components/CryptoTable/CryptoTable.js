@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
+import './CryptoTable.css';
 
 function CryptoTable() {
   const [error, setError] = useState(null);

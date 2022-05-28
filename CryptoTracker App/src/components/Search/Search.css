@@ -2,4 +2,6 @@ input {
     background: rgba(0, 0, 0, 0.2) !important;
     border: none !important;
     color: white !important;
+    padding-left: 20px;
+    border-radius: 5px !important;
 }

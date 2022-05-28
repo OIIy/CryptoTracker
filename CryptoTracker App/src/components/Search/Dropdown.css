@@ -1,0 +1,23 @@
+.dropdown {
+    position: absolute;
+    width: 100%;
+    top: 46px;
+    z-index: 9;
+    margin-top: 1px;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 5px 5px 15px 15px !important;
+}
+
+.dropdown ul {
+    position: relative;
+    list-style: none;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.dropdown ul li {
+    margin-top: 5px;
+    width: 100%;
+}
