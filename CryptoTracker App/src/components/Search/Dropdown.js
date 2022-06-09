@@ -15,11 +15,11 @@ function Dropdown(props) {
     }, [dropdownResults])
 
     return (
-        <div className="dropdown container">
-            <ul>
-                {dropdownResults.length && dropdownResults.map((result) => (<li>{result.CodeDescription}</li>))}
-            </ul>
-        </div>
+        <ul className="container">
+            <li className="dropdown">
+                {dropdownResults.length && dropdownResults.map((result) => (<div className="dropdown-item">{result.CodeDescription})</div>))}
+            </li>
+        </ul>
     )
 }
 
