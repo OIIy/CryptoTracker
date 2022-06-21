@@ -19,13 +19,6 @@ namespace CryptoTracker.Api
 
         public async Task<string> GetOHLC(string BNC2Code)
         {
-            // Write function to build string for API usage
-
-            // Format today's date for date code
-
-            // GWA - Global weighted average for price always USD
-            // MWA - Daily market weighted average for a currency pair
-
             string date = DateTime.Now.AddDays(-5).ToString("yyyy-MM-dd");
 
             UriBuilder uriBuilder = new UriBuilder(_httpClient.BaseAddress);

@@ -61,17 +61,9 @@ namespace CryptoTracker.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<String> Get(string coin = "BTC", string pair = "ETH")
+        public async Task<String> Get(string BNC2Code = "GWA_BTC")
         {
             //TODO: Default get should fetch top movers by default
-            string BNC2Code = "MWA";
-
-            if (string.IsNullOrEmpty(pair))
-            {
-                BNC2Code = "GWA";
-            }
-
-            BNC2Code = string.Format("{0}_{1}_{2}", BNC2Code, coin, pair);
 
             var response = await cryptoClient.GetOHLC(BNC2Code);
 
