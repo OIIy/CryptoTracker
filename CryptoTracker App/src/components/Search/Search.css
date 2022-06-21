@@ -5,3 +5,14 @@ input {
     padding-left: 20px;
     border-radius: 5px !important;
 }
+
+ul.container {
+    padding: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.dropdown-item {
+    color: white;
+    width: 100%;
+}

@@ -14,22 +14,20 @@ function CryptoTable() {
   }, []);
 
   function getCrypto() {
-    axios.get("crypto", {
-    }).then(
-        (res) => {
-          const data = res.data.datatable;
+    axios.get("crypto")
+    .then((res) => {
+      const data = res.data.datatable;
 
-          setTokens(data);
-          
-          mapDataToTable(data);
-  
-          setIsLoaded(true);
-        },
-        (error) => {
-          setError(error);
-          setIsLoaded(true);
-        }
-      )
+      setTokens(data);
+      
+      mapDataToTable(data);
+
+      setIsLoaded(true);
+    },
+    (error) => {
+      setError(error);
+      setIsLoaded(true);
+    })
   }
 
   function mapDataToTable(data) {
