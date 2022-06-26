@@ -8,7 +8,6 @@ function Dropdown(props) {
     useEffect(() => {
         if (props.data) {
             setDropdownResults(props.data);
-            console.log(props.data);
         }
     }, [props])
 

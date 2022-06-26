@@ -6,40 +6,44 @@ import './Search.css';
 
 function Search() {
     const [cryptoList, setCryptoList] = useState([]); 
-    const [cryptoResults, setCryptoResults] = useState([]);
+    const [cryptoData, setCryptoData] = useState([]);
     const [searchString, setSearchString] = useState('');
     const [searchDisabled, setSearchDisabled] = useState(true);
 
     useEffect(() => {
-        getCryptoList();
+        getCryptoData();
     }, [])
 
     useEffect(() => {
-        if (cryptoList.length) {
+        if (cryptoData.length) {
             setSearchDisabled(false);
         }
-    }, [cryptoList])
+    }, [cryptoData])
 
     useEffect(() => {
         renderResultsDropdown();
-    }, [cryptoResults])
+    }, [cryptoData])
 
     const renderResultsDropdown = () => {
-        return <Dropdown data={cryptoResults}/>
+        return <Dropdown data={cryptoData}/>
     }
 
-    const getCryptoList = async () => {
+    const getCryptoData = async () => {
         await axios.get('crypto/list').then(response => {
-            setCryptoList(response.data);
+            setCryptoData(response.data);
         });
     }
  
     const liveSearch = val => {
-        var results = cryptoList.filter(x => x.CodeDescription.includes(val))
-        results = results.slice(0, 15);
+        val = val.toUpperCase();
+
+        var results = cryptoData.filter(x => x.CodeDescription.toUpperCase().includes(val));
+        
+        var displayResults = results.slice(0, 15);
+        
         console.log(results);
         setSearchString(val);
-        setCryptoResults(results);
+        setCryptoList(displayResults);
     }
 
     return (
@@ -48,7 +52,7 @@ function Search() {
                 onChange={e => liveSearch(e.target.value)}
                 disabled={searchDisabled}
             />
-            {searchString.length >= 3 && <Dropdown data={cryptoResults}></Dropdown>}
+            {searchString.length >= 3 && <Dropdown data={cryptoList}></Dropdown>}
         </div>
     )
 }
