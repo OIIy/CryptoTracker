@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CryptoTracker.Api.Models
+namespace CryptoTracker.Api.Models.DataTransferObjects
 {
-    public class UserDto
+    public class User_Dto
     {
         [Key]
         public int UserId { get; set; }

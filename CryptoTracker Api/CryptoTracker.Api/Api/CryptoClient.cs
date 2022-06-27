@@ -19,21 +19,26 @@ namespace CryptoTracker.Api
 
         public async Task<string> GetOHLC(string BNC2Code)
         {
-            string date = DateTime.Now.AddDays(-5).ToString("yyyy-MM-dd");
-
             UriBuilder uriBuilder = new UriBuilder(_httpClient.BaseAddress);
+            
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query["code"] = BNC2Code;
-            query["date"] = date;
-            uriBuilder.Query = query.ToString();
             
-            _httpClient.BaseAddress = uriBuilder.Uri;
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync(query.ToString());
 
-            HttpResponseMessage response = await _httpClient.GetAsync("");
-            response.EnsureSuccessStatusCode();
-            string responseBody = await response.Content.ReadAsStringAsync();
+                response.EnsureSuccessStatusCode();
+                
+                string responseBody = await response.Content.ReadAsStringAsync();
 
-            return responseBody;
+                return responseBody;
+            } 
+
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
     }
 }

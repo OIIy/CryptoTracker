@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.IdentityModel.Tokens.Jwt;
 using System;
 using CryptoTracker.Api.Services.Interfaces;
+using CryptoTracker.Api.Models.DataTransferObjects;
 
 namespace CryptoTracker.Api.Controllers
 {
@@ -31,9 +32,9 @@ namespace CryptoTracker.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserDto request)
+        public async Task<ActionResult<Models.User>> Register(Models.DataTransferObjects.User_Dto request)
         {
-            User user = new User();
+            Models.User user = new Models.User();
 
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -57,10 +58,10 @@ namespace CryptoTracker.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDto request)
+        public async Task<ActionResult<string>> Login(Models.DataTransferObjects.User_Dto request)
         {
             // Find user
-            User user = userRepository.GetUserDetails(request.Username);
+            Models.User user = userRepository.GetUserDetails(request.Username);
             
             if (user == null)
             {

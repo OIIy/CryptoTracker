@@ -2,7 +2,7 @@
 
 namespace CryptoTracker.Api.Models
 {
-    public class BNC_Code
+    public class BNC2Code
     {
         [Key]
         public int CodeId { get; set; }

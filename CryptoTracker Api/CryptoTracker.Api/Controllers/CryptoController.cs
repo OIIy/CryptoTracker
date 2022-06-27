@@ -38,13 +38,13 @@ namespace CryptoTracker.Api.Controllers
         [Route("list")]
         public async Task<string> Get()
         {
-            string cacheKey = "BNC_Code_List";
-            List<BNC_Code> cryptoList = new List<BNC_Code>();
+            string cacheKey = "BNC2Code_List";
+            List<BNC2Code> cryptoList = new List<BNC2Code>();
 
             // If object does not exist in cache then perform query
-            if (!cache.TryGetValue(cacheKey, out List<BNC_Code> BNC_codeList))
+            if (!cache.TryGetValue(cacheKey, out List<BNC2Code> BNC2CodeList))
             {
-                cryptoList = dataContext.BNC_Codes.ToList();
+                cryptoList = dataContext.BNC2Codes.ToList();
 
                 var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromDays(3));
 
