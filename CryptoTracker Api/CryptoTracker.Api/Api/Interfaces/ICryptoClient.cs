@@ -9,6 +9,6 @@ namespace CryptoTracker.Api.Interfaces
 {
     public interface ICryptoClient
     {
-        public Task<string> GetOHLC(string BNC2Code);
+        public Task<BNC_Datatable> GetOHLC(string BNC2Code);
     }
 }

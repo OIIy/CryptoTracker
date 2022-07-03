@@ -65,11 +65,20 @@ namespace CryptoTracker.Api.Controllers
         {
             //TODO: Default get should fetch top movers by default
 
-            var response = await cryptoClient.GetOHLC(BNC2Code);
+            BNC_Datatable cryptoTableData = await cryptoClient.GetOHLC(BNC2Code);
 
             //TODO: Do some server side processing to format the column names and values
 
-            return response;
+            return FormatCryptoTableData(cryptoTableData);
         }
+
+        #region HELPER METHODS
+        private string FormatCryptoTableData(BNC_Datatable cryptoTableData)
+        {
+            
+
+            return "OK";
+        }
+        #endregion
     }
 }

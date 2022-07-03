@@ -83,12 +83,8 @@ namespace CryptoTracker.Api
 
             services.AddHttpClient<ICryptoClient, CryptoClient>(httpClient =>
             {
-                UriBuilder uriBuilder = new UriBuilder(config["CryptoClient:BaseAddress"]);
-                var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-                query["api_key"] = config["CryptoClient:ApiKey"];
-                uriBuilder.Query = query.ToString();
-                 
-                httpClient.BaseAddress = uriBuilder.Uri;
+                Uri uri = new Uri(config["CryptoClient:BaseAddress"]);
+                httpClient.BaseAddress = uri;
             });
 
         }
